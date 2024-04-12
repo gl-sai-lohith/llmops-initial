@@ -1,0 +1,24 @@
+on:
+  schedule:
+    - cron:  '0 12 * * *'  # Runs every day at 12pm
+
+jobs:
+  check-production-model:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install mlflow
+        pip install pyyaml
+        pip install requests
+
+    - name: Check for new production model
+      run: python mlflow_web_hook.py  # This script should use MLflow's REST API to check for a new production model

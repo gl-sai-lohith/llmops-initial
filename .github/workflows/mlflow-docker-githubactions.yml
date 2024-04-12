@@ -1,8 +1,8 @@
 name: Build Docker Image from MLflow Model URI and Push to Docker Hub
 
 on:
-  push:
-    branches: [ main ]
+  repository_dispatch:
+    types: [new-model-version]
 
 jobs:
   build:
@@ -22,11 +22,12 @@ jobs:
         pip install mlflow
         pip install pyyaml
 
-    - name: Read config.yml and set environment variables
-      run: |
-        echo "MLFLOW_MODEL_URI=$(python -c 'import yaml; print(yaml.safe_load(open("config.yml"))["mlflow_model_uri"])')" >> $GITHUB_ENV
-        echo "DOCKER_IMAGE_NAME=$(python -c 'import yaml; print(yaml.safe_load(open("config.yml"))["docker_image_name"])')" >> $GITHUB_ENV
-
+    - name: Read config.yaml and set environment variables
+        run: |
+          echo "MLFLOW_TRACKING_URI=$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["tracking_uri"])')" >> $GITHUB_ENV
+          echo "MLFLOW_MODEL_URI=models:/$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["model_name"])')/Production" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE_NAME=$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["docker_image_name"])')" >> $GITHUB_ENV
+    
     - name: Build Docker image
       run: mlflow models build-docker -m "${{ env.MLFLOW_MODEL_URI }}" -n "${{ env.DOCKER_IMAGE_NAME }}"
 
