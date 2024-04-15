@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron:  '0 12 * * *'  # Runs every day at 12pm
+    - cron:  '0 0 1 1 *'  # Runs once a year on January 1st at 12am
 
 jobs:
   check-production-model:

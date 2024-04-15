@@ -2,4 +2,4 @@ docker_image_name: classification-model
 latest_version: 3
 model_name: Classification
 tracking_uri: https://dagshub.com/sai.lohith/my-first-repo.mlflow
-version_number: '1'
+
