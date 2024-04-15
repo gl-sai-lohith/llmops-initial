@@ -33,6 +33,9 @@ jobs:
     - name: Build Docker image
       run: mlflow models build-docker -m "${{ env.MLFLOW_MODEL_URI }}" -n "${{ env.DOCKER_IMAGE_NAME }}"
 
+    - name: Tag Docker image
+      run: docker tag "${{ env.DOCKER_IMAGE_NAME }}" "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"
+
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
@@ -40,4 +43,4 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
     - name: Push Docker image to Docker Hub
-      run: docker push "${{ env.DOCKER_IMAGE_NAME }}"
+      run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"
