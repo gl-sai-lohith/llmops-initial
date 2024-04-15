@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron:  '0 0 1 1 *'  # Runs once a year on January 1st at 12am
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
 
 jobs:
   check-production-model:
@@ -21,4 +21,6 @@ jobs:
         pip install requests
 
     - name: Check for new production model
-      run: python mlflow_web_hook.py  # This script should use MLflow's REST API to check for a new production model
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: python mlflow_web_hook.py
