@@ -1,7 +1,7 @@
 import mlflow
 import yaml
 import requests
-
+import os
 
 if __name__ == "__main__":
         
@@ -35,12 +35,12 @@ if __name__ == "__main__":
             yaml.safe_dump(config, file)
         print(f"New model in production: {model_name} version {latest_version_number}")
 
-                # Trigger a GitHub Actions workflow
+        # Trigger a GitHub Actions workflow
         response = requests.post(
             "https://api.github.com/repos/Lohith-GL/llmops-initial/dispatches",
             headers={
                 "Accept": "application/vnd.github.everest-preview+json",
-                "Authorization": f"token {config['github_token']}"
+                "Authorization": f"token {os.environ['PERSONAL_TOKEN']}"
             },
             json={
                 "event_type": "new-model-version",
