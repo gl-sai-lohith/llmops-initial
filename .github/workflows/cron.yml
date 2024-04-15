@@ -8,6 +8,8 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: prod
 
     - name: Set up Python
       uses: actions/setup-python@v2
