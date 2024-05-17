@@ -25,12 +25,16 @@ if __name__ == "__main__":
     # Get the version number of the latest model
     latest_version_number = int(latest_version[0].version)
 
+    # Get the model URI
+    model_uri = client.get_model_version_download_uri(model_name, latest_version_number)
+
     # Get the version number from the previous run
     previous_version_number = config.get("latest_version")
 
     # If the version number has changed, update the config file and print a message
     if latest_version_number != previous_version_number:
         config["latest_version"] = latest_version_number
+        config["model_uri"] = model_uri  # Add the model URI to the config
         with open("config.yaml", "w") as file:
             yaml.safe_dump(config, file)
         print(f"New model in production: {model_name} version {latest_version_number}")
