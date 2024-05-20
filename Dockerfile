@@ -1,12 +1,14 @@
 # Dockerfile
-FROM python:3.8
+FROM python:3.10-slim-buster
 
 WORKDIR /app
 
 COPY requirements.txt ./
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY server.py .
+COPY app.py .
 COPY config.yaml .
 
-CMD ["python", "server.py"]
+CMD ["streamlit", "run", "app.py"]
