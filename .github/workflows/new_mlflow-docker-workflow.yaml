@@ -23,9 +23,7 @@ jobs:
       run: |
         pip install mlflow
         pip install pyyaml
-        curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install
+
 
     - name: Read config.yaml and set environment variables
       run: |
@@ -34,7 +32,7 @@ jobs:
         echo "DOCKER_IMAGE_NAME=$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["docker_image_name"])')" >> $GITHUB_ENV
     
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile
       
     - name: Tag Docker image
       run: docker tag "${{ env.DOCKER_IMAGE_NAME }}" "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"
