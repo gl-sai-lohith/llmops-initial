@@ -1,4 +1,4 @@
-docker_image_name: classification-model-docker
+docker_image_name: llmops_l4
 latest_version: 2
 model_name: Classification
 model_uri: https://mlflow-artifacts:/53233ce1ae874ec48bc70080fbe52478/b6803b2a46c54ccab2a60562a3f53d31/artifacts/model
