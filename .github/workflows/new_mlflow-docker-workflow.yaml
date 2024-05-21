@@ -1,4 +1,4 @@
-name: Build Docker Image from MLflow Model URI and Push to Docker Hub
+name: Build Docker Image from MLflow Model URI, Push to Docker Hub, and Update EC2
 
 on:
   repository_dispatch:
@@ -23,6 +23,9 @@ jobs:
       run: |
         pip install mlflow
         pip install pyyaml
+        curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
 
     - name: Read config.yaml and set environment variables
       run: |
@@ -30,9 +33,9 @@ jobs:
         echo "MLFLOW_MODEL_URI=models:/$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["model_name"])')/Production" >> $GITHUB_ENV
         echo "DOCKER_IMAGE_NAME=$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["docker_image_name"])')" >> $GITHUB_ENV
     
-    - name: Build Docker image
-      run: mlflow models build-docker -m "${{ env.MLFLOW_MODEL_URI }}" -n "${{ env.DOCKER_IMAGE_NAME }}"
-
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      
     - name: Tag Docker image
       run: docker tag "${{ env.DOCKER_IMAGE_NAME }}" "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"
 
@@ -44,3 +47,13 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"
+
+    # - name: Update EC2 instance
+    #   run: |
+    #     echo "Updating EC2 instance..."
+    #     ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ec2-user@${{ secrets.EC2_IP }} << EOF
+    #     docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+    #     docker stop sentiment || true
+    #     docker rm sentiment || true
+    #     docker run -d --name sentiment -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -p 8501:8501 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+    #     EOF
