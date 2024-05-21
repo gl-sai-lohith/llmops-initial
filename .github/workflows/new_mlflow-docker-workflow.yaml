@@ -41,7 +41,7 @@ jobs:
 
 
     - name: Push Docker image to Docker Hub
-      run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}"
+      run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:new"
 
     # - name: Update EC2 instance
     #   run: |
