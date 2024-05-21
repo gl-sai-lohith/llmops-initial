@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prod
+      - dev
 
 jobs:
   check-production-model:
