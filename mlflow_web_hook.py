@@ -25,7 +25,7 @@ if __name__ == "__main__":
     latest_version_number = int(latest_version[0].version)
 
     # Get the model URI
-    #model_uri = client.get_model_uri(model_name, latest_version_number)
+    #model_uri = client.get_model_uri(model_name, latest_version_number) #model_uri is no longer necessary
 
     # Get the version number from the previous run
     previous_version_number = config.get("latest_version")
