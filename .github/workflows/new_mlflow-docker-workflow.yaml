@@ -30,7 +30,7 @@ jobs:
         echo "MLFLOW_MODEL_URI=models:/$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["model_name"])')/Production" >> $GITHUB_ENV
         echo "DOCKER_IMAGE_NAME=$(python -c 'import yaml; print(yaml.safe_load(open("config.yaml"))["docker_image_name"])')" >> $GITHUB_ENV
     
-    - name: Build the Docker image
+    - name: Build and tag the Docker image
       run: docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest" . --file Dockerfile
     
     - name: Login to Docker Hub
