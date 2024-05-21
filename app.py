@@ -18,7 +18,11 @@ model_name = config['model_name']
 model_version = str(config['latest_version'])
 mlflow.set_tracking_uri(config["tracking_uri"])
 
-model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
+@st.cache(allow_output_mutation=True)
+def load_model():
+    return mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
+
+model = load_model()
 
 st.title('Model Prediction')
 
