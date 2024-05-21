@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prod
+      - customdocker
 
 jobs:
   check-production-model:

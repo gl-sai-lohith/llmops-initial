@@ -1,5 +1,5 @@
-docker_image_name: classification-model
-latest_version: 2
+docker_image_name: classification-model-docker
+latest_version: 3
 model_name: Classification
+model_uri: https://mlflow-artifacts:/53233ce1ae874ec48bc70080fbe52478/b6803b2a46c54ccab2a60562a3f53d31/artifacts/model
 tracking_uri: https://dagshub.com/sai.lohith/my-first-repo.mlflow
-
