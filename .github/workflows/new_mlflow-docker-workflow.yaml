@@ -46,7 +46,7 @@ jobs:
       run: |
         echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > key.pem
         chmod 400 key.pem
-        ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.EC2_IP }} << EOF
+        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i key.pem ec2-user@${{ secrets.EC2_IP }} << EOF
         docker stop movie_sentiment || true
         docker rm movie_sentiment || true
         docker rmi "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:new" || true
