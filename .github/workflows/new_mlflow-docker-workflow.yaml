@@ -21,7 +21,7 @@ jobs:
 
     - name: SSH and Update EC2 instance
       run: |
-        echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > my_key.pem
+        echo "${{ secrets.SSH_KEY }}" > my_key.pem
         chmod 600 my_key.pem
         ssh -v -o StrictHostKeyChecking=no -i key ec2-user@${{ secrets.EC2_IP }} << EOF
           docker stop movie_sentiment || true
