@@ -21,12 +21,12 @@ jobs:
 
     - name: SSH and Update EC2 instance
       run: |
-        echo "${{ secrets.SSH_KEY }}" > key.pem
+        echo "${{secrets.SSH_KEY}}" > key.pem
         chmod 600 key.pem
         ssh -v -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.EC2_IP }} << EOF
           docker stop movie_sentiment || true
           docker rm movie_sentiment || true
-          docker rmi "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:new" || true
-          docker pull "${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:new"
-          docker run -d --name sentiment -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -p 8501:8501 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+          docker rmi "${{secrets.DOCKER_HUB_USERNAME}}/${{env.DOCKER_IMAGE_NAME}}:new" || true
+          docker pull "${{secrets.DOCKER_HUB_USERNAME}}/${{env.DOCKER_IMAGE_NAME}}:new"
+          docker run -d --name sentiment -e OPENAI_API_KEY=${{secrets.OPENAI_API_KEY}} -p 8501:8501 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
         EOF
